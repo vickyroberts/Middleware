@@ -5,12 +5,12 @@ var messages = require('../GlobalMessages.js');
 exports.verifyTokenValidity=function(req, res, next){
 
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,POST');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
    var token = req.body.token || req.headers['token-bind'];
    // var token = req.body.token;
-    if(req.url != "/authuser" && req.url != "/putUserDetails")
+    if(req.url != "/authuser" && req.url != "/putUserDetails" && req.method.toLowerCase() != "options")
     {
             // decode token
             if (token) {

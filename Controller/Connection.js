@@ -50,7 +50,7 @@ exports.pgSelectQuery = function(queryString, paramsArray, clientConn, callback)
     clientConn.queryAsync("BEGIN").then(function(result){
           clientConn.queryAsync(queryString, paramsArray).then(function(result)
           {            
-            console.log(result);
+            //console.log(result);
             clientConn.queryAsync("FETCH All from records").then(function(resultFetch)
             {                    
                 callback(null, resultFetch);
