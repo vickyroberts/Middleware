@@ -26,7 +26,8 @@ var configServer = {
   idleTimeoutMillis: 30000,  
 };
 
-var pool = new pg.Pool(configServer);
+//var pool = new pg.Pool(configServer);
+var pool = new pg.Pool(config);
 
 //Create a PG connection pool.
 exports.pgConnectionPool = function(callback){

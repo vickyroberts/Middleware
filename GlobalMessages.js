@@ -28,10 +28,17 @@ var messageValues = {
     productSelectedInfoError:'Details not available for selected product.',
     homepageBannerError:'Error while getting data for home page. Please refresh the page.',
     homepageCategoryError:'Error while getting data for home page. Please refresh the page.',
-    homepageOfferError:'Error while getting data for home page. Please refresh the page.'
-    
-
-
+    homepageOfferError:'Error while getting data for home page. Please refresh the page.',
+    masterDataCountryError:'Currently service is not available.',
+    masterDataStateError:'Currently service is not available for selected country.',
+    materDataCountryIdError:'Please select country.',
+    masterDataCityError:'Currently service is not available for selected state.',
+    materDataStateIdError:'Please select state.',
+    masterDataAreaError:'Currently service is not available for selected city.',
+    materDataCityIdError:'Please select city.',
+    masterDataBrandError:'No brands available to display.',
+    masterDataCategoryError:'No category available to display',
+    masterDataSortbyError:'Error while getting the sortby list.',
 
 };
 

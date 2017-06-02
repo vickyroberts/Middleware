@@ -66,7 +66,7 @@ exports.authUser = function(req, res) {
     logger.info("UserControl - Auth user");
     //Get the schema name with the help of username name.
     getUserSchema(req.body.uname, function(error, resultSchema){
-      if(error)
+      if(error || !resultSchema || resultSchema.rows.length < 1)
       {
         res.json({status:messages.apiStatusError,message:messages.authInvalid});
       }
@@ -90,7 +90,7 @@ exports.authUser = function(req, res) {
             conn.pgSelectQuery(queryStr, paramsArr, clientConn, function(err, result){
                 res.status(200);
                 if(err)
-                {
+                {                  
                   logger.error("UserControl - Error while getting auth data " + err);
                   res.json({status:messages.apiStatusError,message:messages.dbConnectionError});
                 }
@@ -99,12 +99,16 @@ exports.authUser = function(req, res) {
                     if(result && result.rows && result.rows.length > 0)
                     {
                       var user = {uid:result.rows[0].user_id, cityid:resultSchema.rows[0].city_id, schema:resultSchema.rows[0].db_name};
+                      var userDetails = {ismobverified:result.rows[0].is_mobile_verified, 
+                        power:result.rows[0].is_admin, vendor:result.rows[0].is_vendor, 
+                        firstname:result.rows[0].first_name, lastname:result.rows[0].last_name}
                       var token = jwt.sign(user, messages.tokenSec, {
                             expiresIn: 86400 // expires in 20 mins
                           });                        
                       res.status(200);
-                      req.session.userid = result.rows[0].user_id;                      
-                      res.json({status:messages.apiStatusSuccess,token:token});
+                      req.session.userid = result.rows[0].user_id;    
+                      req.session.save();                  
+                      res.json({status:messages.apiStatusSuccess,token:token,details:userDetails});
                     }
                     else
                     { 

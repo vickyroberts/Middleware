@@ -5,11 +5,13 @@ var busboy = require('connect-busboy');
 var rateLimit = require('express-rate-limit');
 var userRoutes = require('./Router/UserRoutes.js');
 var productRoutes = require('./Router/ProductRoutes.js');
+var masterRoutes = require('./Router/MasterDataRoutes.js');
 // var floatRoutes = require('./Router/FloatRoute.js');
 // var relationRoutes = require('./Router/RelationRoute.js');
 // var masterRoutes = require('./Router/MasterRoute.js');
 var passport = require('passport');
 var session = require('express-session');
+var cookieParser = require('cookie-parser');
 var logger = require("./Logger.js");
 var ejs = require('ejs');
 var jwt = require('jsonwebtoken');
@@ -18,8 +20,10 @@ var app = express();
 console.log("Initialize - Start");
 logger.debug("Application initiating...");
 
+
 app.use(busboy());
 
+//app.set('trust proxy', 1);
 //app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc) 
  
 var limiter = new rateLimit({
@@ -42,17 +46,27 @@ app.use(passport.initialize());
 // Use express session support since OAuth2orize requires it
 var date = new Date();
 var appendToExternalId = date.getDate()+"v"+date.getMonth()+"r"+date.getFullYear();
+
+app.use(cookieParser());
 app.use(session({  
   secret: appendToExternalId + messages.tokenSec,
-  saveUninitialized: true,
-  resave: false
+  saveUninitialized: false,
+  resave: false,
+  cookie: { secure: false,
+        maxAge: 1000 * 60 * 24 // 24 hours 
+  }
 }));
+
+
+
 app.use(limiter);
 var apiRoutes = express.Router();
 
 app.use('/api/member',userRoutes);
 app.use('/api/product',productRoutes);
+app.use('/api/master',masterRoutes);
 
+//var port = 80;
 var port = 3000;
 
 app.listen(port);

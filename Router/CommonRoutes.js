@@ -3,10 +3,12 @@ var jwt = require('jsonwebtoken');
 var messages = require('../GlobalMessages.js');
 
 exports.verifyTokenValidity=function(req, res, next){
-
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+  
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+ 
 
    var token = req.body.token || req.headers['token-bind'];
    // var token = req.body.token;
